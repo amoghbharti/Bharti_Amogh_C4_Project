@@ -1,24 +1,21 @@
-import logo from './logo.svg';
 import './App.css';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import AuthProvider from './context/AuthProvider';
+import routes from './routes';
+import useAuth from './hooks/useAuth';
+import { ThemeProvider } from '@mui/material';
+import theme from './theme';
 
 function App() {
+  const { isAuthenticated, hasRole } = useAuth();
+  const router = createBrowserRouter(routes(isAuthenticated, hasRole));
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 
