@@ -11,10 +11,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import useAuth from '../../hooks/useAuth';
 
 
-function ProductCard({ product = {}, onEdit = () => { }, onDelete = () => { } }) {
+function ProductCard({ product = {}, onClick = () => {}, onEdit = () => { }, onDelete = () => { } }) {
     const { isAdmin } = useAuth();
 
-    return <Card sx={{ maxWidth: 345, width: "100%" }}>
+    return <Card onClick={onClick} sx={{ maxWidth: 345, width: "100%", cursor: 'pointer' }}>
         <CardMedia
             component="img"
             height="194"

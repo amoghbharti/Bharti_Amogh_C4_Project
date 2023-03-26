@@ -8,6 +8,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import { signupService } from "../../api/auth";
+import { toast } from "react-toastify";
 
 function Signup() {
     const navigate = useNavigate();
@@ -30,6 +31,11 @@ function Signup() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         event.stopPropagation();
+        if(formData.password !== formData.confirmPassword) {
+            toast.error("Password and Confirm Password not matching!");
+            return;
+        }
+
         const data = await signupService(formData);
         if(data) {
             navigate('/login');

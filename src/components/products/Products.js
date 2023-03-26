@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import './Products.css';
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Button from '@mui/material/Button';
@@ -97,7 +98,7 @@ function Products() {
         <Grid container spacing={3} sx={{ px: 2 }}>
             {productList.map((product) => (
                 <Grid key={product.id} item md={4} sm={6} xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <ProductCard product={product} onEdit={handleEdit} onDelete={handleDelete} />
+                    <ProductCard product={product} onClick={() => navigate(`/products/${product.id}`)} onEdit={handleEdit} onDelete={handleDelete} />
                 </Grid>
             ))}
         </Grid>

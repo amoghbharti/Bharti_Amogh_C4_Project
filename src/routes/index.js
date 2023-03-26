@@ -1,11 +1,13 @@
 import { Navigate } from 'react-router-dom';
+import { roles } from '../constants/roles';
 import AppLayout from '../common/layout/AppLayout';
 import ErrorPage from '../components/error/ErrorPage';
 import Login from '../components/login/Login';
 import Signup from '../components/signup/Signup';
 import Products from '../components/products/Products';
 import AddProduct from '../components/products/AddProduct';
-import { roles } from '../constants/roles';
+import ProductDetail from '../components/products/ProductDetail';
+import PlaceOrder from '../components/order/PlaceOrder';
 
 // Application routes definition
 const routes = (isAuthenticated, hasRoles = []) => {
@@ -51,13 +53,21 @@ const routes = (isAuthenticated, hasRoles = []) => {
                     element: authRouteGaurd(<Products />)
                 },
                 {
+                    path: "products/:id",
+                    element: authRouteGaurd(<ProductDetail />)
+                },
+                {
                     path: "add-product",
                     element: authRouteGaurd(<AddProduct />, [roles.ADMIN])
                 },
                 {
                     path: "modify-product/:id",
                     element: authRouteGaurd(<AddProduct modify={true} />, [roles.ADMIN])
-                }
+                },
+                {
+                    path: "place-order",
+                    element: authRouteGaurd(<PlaceOrder />)
+                },
             ]
         }
     ]
