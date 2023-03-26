@@ -1,4 +1,6 @@
+import { useMemo } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import './NavigationBar.css';
 import useAuth from '../../hooks/useAuth';
 import { authTabs, nonAuthTabs } from './navTabInfo';
@@ -10,10 +12,18 @@ import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link'
 import Button from '@mui/material/Button';
+import { setSearchValue } from '../../store/slices/search';
+import { debounce } from '../../utils/functions';
 
 function NavigationBar() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { isAuthenticated, hasRoles, resetAuthData } = useAuth();
+
+  // debounce for search bar
+  const handleSearch = useMemo(() =>
+    debounce((e) => dispatch(setSearchValue(e.target.value)), 500)
+  , [dispatch]);
 
   const handleLogout = () => {
     resetAuthData();
@@ -31,7 +41,7 @@ function NavigationBar() {
         <Toolbar disableGutters>
           <Logo />
           <Box className="navSearch" >
-            {isAuthenticated && <SearchBar />}
+            {isAuthenticated && <SearchBar onChange={handleSearch} />}
           </Box>
 
           <Box>

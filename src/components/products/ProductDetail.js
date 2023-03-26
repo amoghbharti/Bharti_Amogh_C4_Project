@@ -35,7 +35,7 @@ function ProductDetail() {
 
     return <Box sx={{ p: 8, display: 'flex' }}>
         <Box className="productImage">
-            <img src={product.imageUrl || ''} width={500} height={500} alt="product" />
+            <img src={product.imageUrl || ''} width={400} height={400} alt="product" />
         </Box>
         <Box>
             <Box sx={{ display: 'flex' }}>

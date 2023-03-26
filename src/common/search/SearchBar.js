@@ -3,8 +3,9 @@ import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from '@mui/icons-material/Search';
 
-function SearchBar() {
+function SearchBar({ onChange = () => { } }) {
     return <TextField
+        onChange={onChange}
         className="searchBar"
         size="small"
         variant="outlined"

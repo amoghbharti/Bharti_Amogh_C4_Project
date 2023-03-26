@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import ReactSelect from "react-select";
+import { useNavigate } from "react-router-dom";
 import './Products.css';
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -11,11 +13,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import ProductCard from "../../common/product/ProductCard";
 import ToggleButtons from "../../common/toggleButton/ToggleButtons";
 import { getCategoriesService, getProductsService, deleteProductService } from "../../api/product";
-import ReactSelect from "react-select";
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function Products() {
     const navigate = useNavigate();
+    const searchValue = useSelector((state) => state.search.value);
     const [activeCategory, setActiveCategory] = useState("");
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
@@ -53,6 +55,7 @@ function Products() {
         setSoryBy(val?.value || null);
     }
 
+    // compare function for sorting
     const comparefn = useCallback((a, b) => {
         if(!sortBy) return 0;
         if(sortBy === 'asc') {
@@ -64,10 +67,16 @@ function Products() {
         return a.dateCreated - b.dateCreated; 
     }, [sortBy]);
 
+    // filter product list based on search, category or sortby
     const productList = useMemo(() => {
-        const list = activeCategory ? products.filter((product) => product.category === activeCategory) : products;
+        let list = searchValue
+            ? products.filter((product) => product.name.toLowerCase().includes(searchValue.toLowerCase()))
+            : products;
+        list = activeCategory
+            ? list.filter((product) => product.category === activeCategory)
+            : list;
         return list.slice().sort(comparefn);
-    }, [products, activeCategory, comparefn]);
+    }, [products, searchValue, activeCategory, comparefn]);
 
     const handleEdit = (id) => {
         navigate(`/modify-product/${id}`);
