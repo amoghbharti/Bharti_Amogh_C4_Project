@@ -8,8 +8,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-  const { isInitialised, isAuthenticated, hasRoles, resetAuthData } = useAuth();
-  const router = useRoutes(routes(isAuthenticated, hasRoles, resetAuthData));
+  const { isInitialised, isAuthenticated, hasRoles } = useAuth();
+  const router = useRoutes(routes(isAuthenticated, hasRoles));
 
   return (
     <ThemeProvider theme={theme}>

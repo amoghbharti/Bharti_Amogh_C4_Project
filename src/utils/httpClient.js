@@ -20,7 +20,7 @@ httpClient.interceptors.request.use((config) => {
 // Http response interceptor
 httpClient.interceptors.response.use((response) => {
     toast.success(response.data.message)
-    return response.data;
+    return response.data || {};
 }, (error) => {
     console.log("server error", error);
     toast.error(error.message);

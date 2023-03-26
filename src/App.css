@@ -16,3 +16,18 @@
     display: flex;
     justify-content: flex-end;
 }
+
+.flexSpaceBetween {
+    display: flex;
+    justify-content: space-between;
+}
+
+.flexColumnCenter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.selectWidth {
+    max-width: 250px;
+}
