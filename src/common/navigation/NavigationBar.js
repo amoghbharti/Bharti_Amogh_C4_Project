@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import './NavigationBar.css';
 import useAuth from '../../hooks/useAuth';
 import { authTabs, nonAuthTabs } from './navTabInfo';
@@ -12,7 +12,18 @@ import Link from '@mui/material/Link'
 import Button from '@mui/material/Button';
 
 function NavigationBar() {
-  const { isAuthenticated, hasRole, logout } = useAuth();
+  const navigate = useNavigate();
+  const { isAuthenticated, hasRoles, resetAuthData } = useAuth();
+
+  const handleLogout = () => {
+    resetAuthData();
+    navigate('/login');
+  }
+
+  const checkRoles = (roles = []) => {
+    const set = new Set(roles);
+    return hasRoles.find((userRole) => set.has(userRole.name));
+  }
 
   return (
     <AppBar position="static" classes={{ colorPrimary: "navBar" }}>
@@ -26,7 +37,7 @@ function NavigationBar() {
           <Box>
             {isAuthenticated
               ? authTabs.map((tab) => (
-                tab.allowedRoles.includes(hasRole)
+                checkRoles(tab.allowedRoles)
                   ? <Link
                     key={tab.path}
                     component={NavLink}
@@ -53,8 +64,8 @@ function NavigationBar() {
               ))}
           </Box>
 
-          {isAuthenticated && <Box>
-            <Button onClick={logout} variant="contained" color="secondary">
+          {isAuthenticated && <Box sx={{ px: 2 }}>
+            <Button onClick={handleLogout} variant="contained" color="secondary">
               Logout
             </Button>
           </Box>}

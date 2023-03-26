@@ -2,23 +2,23 @@ import { roles } from '../../constants/roles';
 
 export const nonAuthTabs = [
     {
-        path: 'login',
+        path: '/login',
         label: 'Login',
     },
     {
-        path: 'signup',
+        path: '/signup',
         label: 'Sign Up',
     }
 ];
 
 export const authTabs = [
     {
-        path: '',
+        path: '/products',
         label: 'Home',
         allowedRoles: [roles.ADMIN, roles.USER],
     },
     {
-        path: 'products',
+        path: '/add-product',
         label: 'Add Product',
         allowedRoles: [roles.ADMIN],
     }

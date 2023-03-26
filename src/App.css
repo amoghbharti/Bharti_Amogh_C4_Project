@@ -1,0 +1,18 @@
+.fullWidth {
+    width: 100%;
+}
+
+.fullHeightContent {
+    min-height: calc(100vh - 64px);
+}
+
+.flexCenterBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flexEndBox {
+    display: flex;
+    justify-content: flex-end;
+}

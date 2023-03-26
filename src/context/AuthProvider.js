@@ -1,44 +1,53 @@
-import { createContext, useEffect, useState } from "react";
-import * as authService from '../api/auth';
+import { createContext, useCallback, useEffect, useState } from "react";
+import { getCurrentUserService } from "../api/user";
+import { getToken, removeToken, setToken } from "../utils/token";
 
 export const AuthContext = createContext({
+    isInitialised: false,
     user: {},
     isAuthenticated: false,
-    hasRole: null,
-    login: () => { },
-    logout: () => { },
+    hasRoles: [],
+    setAuthData: async () => { },
+    resetAuthData: () => { },
 });
 
 function AuthProvider({ children }) {
+    const [isInitialised, setIsInitialised] = useState(false);
     const [user, setUser] = useState({});
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [hasRole, setRole] = useState(null);
+    const [hasRoles, setRoles] = useState([]);
+
+    console.log(user, hasRoles, isInitialised,  isAuthenticated);
+
+    const initialiseData = useCallback(async () => {
+        if(getToken()) {
+            await setAuthData();
+        }
+        setIsInitialised(true);
+    }, []);
 
     useEffect(() => {
+        initialiseData();
+    }, [initialiseData]);
 
-    });
+    const setAuthData = async (token) => {
+        if(token) {
+            setToken(token);
+        }
+        const data = await getCurrentUserService();
+        setUser(data);
+        setIsAuthenticated(true);
+        setRoles(data.roles);
+    }
 
-    const setInitial = () => {
+    const resetAuthData = () => {
+        removeToken();
         setUser({});
         setIsAuthenticated(false);
-        setRole(null);
+        setRoles(null);
     }
 
-    const login = async (username, password) => {
-        try {
-            const data = await authService.login(username, password);
-            setUser(data);
-            setIsAuthenticated(true);
-            setRole(data.hasRole)
-        } catch (err) {
-            setInitial();
-        }
-    }
-    const logout = () => {
-        setInitial();
-    }
-
-    const context = { user, isAuthenticated, hasRole, login, logout };
+    const context = { isInitialised, user, isAuthenticated, hasRoles, setAuthData, resetAuthData };
 
     return <AuthContext.Provider value={context}>
         {children}
